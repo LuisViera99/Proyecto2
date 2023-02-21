@@ -1,16 +1,18 @@
 <script setup>
 
-import {ref} from 'vue'
+import {ref,computed} from 'vue'
 
 import ButtonCounter from './components/ButtonCounter.vue'
 import BlogPost from  './components/BlogPost.vue'
 import PaginatePost from  './components/PaginatePost.vue'
+import LoadingSpinner from './components/LoadingSpinner.vue'
 
-const posts = ref([])
-const postXpage = 10
-const inicio = ref(0)
-const fin = ref(postXpage)
+const posts = ref([]);
+const postXpage = 10;
+const inicio = ref(0);
+const fin = ref(postXpage);
 
+const loading = ref(true);
 const favorito = ref("");
 
 
@@ -33,17 +35,36 @@ fetch('https://jsonplaceholder.typicode.com/posts')
   .then(res => res.json())
   .then((data) => {
     posts.value = data;
+  })
+  .finally(() => {
+    setTimeout(()=> {
+      loading.value = false
+    },2000)
+    
   });
+
+  const maxLength = computed(() =>posts.value.length)
 </script>
 
 <template>
-  <div class="container">
+  <LoadingSpinner
+    v-if="loading"
+  ></loadingSpinner>
+
+
+  <div class="container" v-else>
     <h1>APP</h1>
     <h2>Mis Post Favoritos: {{ favorito }} </h2>
 
   
 
-  <PaginatePost @next="next" @back="back" :inicio="inicio" :fin="fin" class="mb-2"/>    
+  <PaginatePost 
+  @next="next" 
+  @back="back" 
+  :inicio="inicio" 
+  :fin="fin" 
+  :maxLength="maxLength"
+  class="mb-2"/>    
 
     <BlogPost 
         v-for="post in posts.slice(inicio,fin)" 
