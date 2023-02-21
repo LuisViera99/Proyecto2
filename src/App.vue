@@ -18,6 +18,13 @@ const cambiarFavorito =(title) => {
   favorito.value = title;
 }
 
+
+const next = () => {
+  inicio.value = inicio.value + postXpage
+  fin.value = fin.value + postXpage
+
+}
+
 fetch('https://jsonplaceholder.typicode.com/posts')
   .then(res => res.json())
   .then((data) => {
@@ -29,6 +36,8 @@ fetch('https://jsonplaceholder.typicode.com/posts')
   <div class="container">
     <h1>APP</h1>
     <h2>Mis Post Favoritos: {{ favorito }} </h2>
+
+    <button @click="next">Next Provisorio</button>
 
 
   <PaginatePost class="mb-2"/>    
