@@ -41,7 +41,7 @@ onMounted(async() => {
   }finally{
     setTimeout(()=> {
       loading.value = false;
-    },1000);
+    },2000);
   }
 });
 
