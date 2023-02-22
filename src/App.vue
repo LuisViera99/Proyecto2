@@ -1,6 +1,6 @@
 <script setup>
 
-import {ref,computed} from 'vue'
+import {ref,computed,onMounted} from 'vue'
 
 import ButtonCounter from './components/ButtonCounter.vue'
 import BlogPost from  './components/BlogPost.vue'
@@ -12,7 +12,7 @@ const postXpage = 10;
 const inicio = ref(0);
 const fin = ref(postXpage);
 
-const loading = ref(true);
+const loading = ref(false);
 const favorito = ref("");
 
 
@@ -31,17 +31,34 @@ const back = () => {
 
 }
 
-fetch('https://jsonplaceholder.typicode.com/posts')
-  .then(res => res.json())
-  .then((data) => {
-    posts.value = data;
-  })
-  .finally(() => {
+onMounted(async() => { 
+  loading.value = true;
+  try {
+     const res =  await fetch('https://jsonplaceholder.typicode.com/posts');
+    posts.value = await res.json()
+    }catch(error){
+    console.log(error);
+  }finally{
     setTimeout(()=> {
-      loading.value = false
-    },2000)
+      loading.value = false;
+    },1000);
+  }
+});
+
+
+
+
+//fetch('https://jsonplaceholder.typicode.com/posts')
+  //.then(res => res.json())
+  //.then((data) => {
+   // posts.value = data;
+  //})
+  //.finally(() => {
+    //setTimeout(()=> {
+     // loading.value = false
+    //},2000)
     
-  });
+  //});
 
   const maxLength = computed(() =>posts.value.length)
 </script>

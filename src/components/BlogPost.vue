@@ -22,7 +22,7 @@ const emit = defineEmits(['cambiarFavoritoNombre'])
             <h5 class="card-title"> {{id}} - {{ title }}  </h5>
             <p> {{ body }}</p>
             <button 
-            @click="cambiarFavorito(title)"
+            @click="cambiarFavorito(id)"
             class="btn btn-outline-primary"
             >Favorito</button>
 
